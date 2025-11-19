@@ -67,5 +67,67 @@ completed contenus dans un tableau associatif uniquement si son statut vaut la v
             <li style="text-decoration: <?= $task['completed'] ? 'line-through' : 'none' ?>"><?= $task['title'] ?> - <?= $task['completed'] ? 'completed' : 'not completed' ?></li>
         <?php endforeach; ?>
     </ul>
+    <h2>Exo 4/5</h2>
+    <p>
+        Afficher une liste de tâches ainsi que son statut completed et son auteur (string) contenus dans un tableau associatif<br/>
+        Selon la valeur de la variable isCompleted et filterOwner (string), afficher une liste de tâches ainsi que son statut completed et son auteur contenus dans un tableau associatif uniquement si son statut vaut la variable isCompleted et son auteur commence par filterOwner
+    </p>
+    <?php
+        $tasks = [["author" => "dupond", "title" => "dormir", "completed" => true], ["author" => "durand", "title" => "manger", "completed" => true], ["author" => "durand", "title" => "manger", "completed" => false], ["author" => "doe", "title" => "manger", "completed" => false]];
+    $isCompleted = true;
+    $filterOwner = trim("durand ");
+    $tasksFiltered = array_filter($tasks, fn ($task) => $task['completed'] === $isCompleted && str_starts_with($task['author'], $filterOwner));
+    ?>
+    <?php foreach ($tasksFiltered as $task) : ?>
+        <li style="text-decoration: <?= $task['completed'] ? 'line-through' : 'none' ?>"><?= $task['title'] ?> - <?= $task['completed'] ? 'completed' : 'not completed' ?> - <?= $task['author'] ?></li>
+    <?php endforeach; ?>
+
+    <h2>Exo 6/7</h2>
+    <p>
+        Si le tableau associatif est vide, afficher “Aucune tâche créée”
+        <br/>
+        Si après filtres aucun élément est affiché, alors afficher “Aucune tâche correspondant aux critères”
+    </p>
+    <?php
+        $tasks = [["author" => "dupond", "title" => "dormir", "completed" => true], ["author" => "durand", "title" => "manger", "completed" => true], ["author" => "durand", "title" => "manger", "completed" => false], ["author" => "doe", "title" => "manger", "completed" => false]];
+    $isCompleted = true;
+    $filterOwner = trim("durand ");
+    $tasksFiltered = array_filter($tasks, fn ($task) => $task['completed'] === $isCompleted && str_starts_with($task['author'], $filterOwner));
+    ?>
+    <?php if (count($tasks) === 0): ?>
+        Aucune tâche créée
+    <?php elseif (count($tasksFiltered) === 0) : ?>
+        Aucune tâche correspondant aux critères
+    <?php else : ?>
+        <ul>
+        <?php foreach ($tasksFiltered as $task) : ?>
+            <li style="text-decoration: <?= $task['completed'] ? 'line-through' : 'none' ?>"><?= $task['title'] ?> - <?= $task['completed'] ? 'completed' : 'not completed' ?> - <?= $task['author'] ?></li>
+        <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+    <span>Version débutant</span>
+    <?php
+        $tasks = [["author" => "dupond", "title" => "dormir", "completed" => true], ["author" => "durand", "title" => "manger", "completed" => true], ["author" => "durand", "title" => "manger", "completed" => false], ["author" => "doe", "title" => "manger", "completed" => false]];
+    $isCompleted = true;
+    $filterOwner = trim("jean ");
+    $found = false;
+    ?>
+    <?php if (count($tasks) === 0): ?>
+        Aucune tâche créée
+    <?php else :?>
+        <ul>
+        <?php foreach ($tasks as $task) : ?>
+            <?php if (!($task['completed'] === $isCompleted && str_starts_with($task['author'], $filterOwner))) {
+                continue;
+            } else {
+                $found = true;
+            } ?>
+            <li style="text-decoration: <?= $task['completed'] ? 'line-through' : 'none' ?>"><?= $task['title'] ?> - <?= $task['completed'] ? 'completed' : 'not completed' ?> - <?= $task['author'] ?></li>
+        <?php endforeach; ?>
+        </ul>
+        <?php if (!$found): ?>
+            Aucune tâche correspondant aux critères
+        <?php endif; ?>
+    <?php endif; ?>
 </body>
 </html>
